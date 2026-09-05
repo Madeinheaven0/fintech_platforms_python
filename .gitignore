@@ -1,0 +1,35 @@
+# Byte-compiled / cache Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environnements virtuels
+.venv/
+venv/
+ENV/
+env/
+
+# Fichiers de configuration et variables d'environnement (Mots de passe, clés API)
+.env
+.env.local
+
+# Fichiers et répertoires de build / distribution
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Caches d'outils de test et de typage
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Éditeurs de code et IDE
+.vscode/
+.idea/
+*.swp
+
+# Fichiers système
+.DS_Store
+Thumbs.db
