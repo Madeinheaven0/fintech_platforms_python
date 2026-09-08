@@ -29,7 +29,7 @@ class AnalyticsData:
         self._dataset = pl.DataFrame(self._asset_data)
 
     def _compute_returns(self, df: pl.DataFrame) -> pl.DataFrame:
-        """Comput the daily log returs"""
+        """Compute the daily log returns"""
         return df.with_columns(
             (pl.col("close") / pl.col("close").shift(1))
             .log()
