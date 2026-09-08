@@ -7,7 +7,7 @@ from typing import List, Dict, Union
 
 class MarketDataParser:
     def __init__(self) -> None:
-        self.data: Dict[str, List[Dict[str, Union[str, float]]]] = {}
+        self._data: Dict[str, List[Dict[str, Union[str, float]]]] = {}
 
     def _clean_row(self, row: dict) -> dict:
         """
@@ -18,7 +18,7 @@ class MarketDataParser:
         cleaned_row = {}
         for key, value in row.items():
             try:
-                cleaned_row[key] = float(value) is '.' in str(value) or int(value)
+                cleaned_row[key] = float(value) if '.' in str(value) else int(value)
             except (ValueError, TypeError):
                 cleaned_row[key] = value
 
@@ -87,11 +87,15 @@ class MarketDataParser:
             elif file.suffix.lower() == ".json":
                 self.parse_json_file(file, default_ticker=default_ticker)
 
+    @property
+    def data(self) -> Dict[str, List[Dict[str, Union[str, float]]]]:
+        return self._data
+
 
 if __name__ == "__main__":
     parser = MarketDataParser()
 
-    # load an unique multi-assets file or a complete folder
+    # load a unique multi-assets file or a complete folder
     # parser.load_path("donnees_marche.csv")
     # parser.load_path("./dossier_fichiers_actifs/")
 

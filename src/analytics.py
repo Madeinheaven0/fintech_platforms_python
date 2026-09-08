@@ -101,7 +101,7 @@ class AnalyticsData:
             self._alerts[asset] = {}
             if self._metrics[asset]["total_returns"] < returns_threshold:
                 self._alerts[asset]["total_returns"] = "The total returns is too low"
-            if self._metrics[asset][f"annualized_volatility_{self._window}"] < vol_threshold:
+            if self._metrics[asset][f"annualized_volatility_{self._window}"] > vol_threshold:
                 self._alerts[asset][f"annualized_volatility_{self._window}"] = "The annualized volatility is too high"
 
     def save_dataset_to_parquet(self, pathfile: Path, name: str):
