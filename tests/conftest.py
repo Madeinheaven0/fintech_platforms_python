@@ -1,9 +1,10 @@
+from datetime import datetime
+
 import pytest
 
 from pathlib import Path
-
 from data.market_data import MarketDataParser
-
+from fintech_cli.models.arbitrage import ForwardContract
 
 
 @pytest.fixture
@@ -27,3 +28,21 @@ def multi_asset_data():
         'Close': 181.90,
         'Volume': 52000000
     }
+
+
+@pytest.fixture
+def contract():
+    spot_price = 100.0
+    strike_price = 100.0
+    free_rate = 0.08
+    dividend_rate = 0.05
+    val_date = datetime(2020, 1, 1)
+    maturity_date = datetime(2020, 2, 1)
+    return ForwardContract(
+        spot_price=spot_price,
+        strike_price=strike_price,
+        free_rate=free_rate,
+        dividend_rate=dividend_rate,
+        val_date=val_date,
+        maturity_date=maturity_date,
+    )
