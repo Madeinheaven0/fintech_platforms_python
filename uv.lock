@@ -399,12 +399,6 @@ wheels = [
 ]
 
 [[package]]
-name = "logging"
-version = "0.4.9.6"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/93/4b/979db9e44be09f71e85c9c8cfc42f258adfb7d93ce01deed2788b2948919/logging-0.4.9.6.tar.gz", hash = "sha256:26f6b50773f085042d301085bd1bf5d9f3735704db9f37c1ce6d8b85c38f2417", size = 96029, upload-time = "2013-06-04T23:43:22.086Z" }
-
-[[package]]
 name = "markdown-it-py"
 version = "4.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1229,8 +1223,14 @@ name = "superprojectfinance"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
+    { name = "pydantic" },
+    { name = "rich" },
+    { name = "typer" },
+]
+
+[package.dev-dependencies]
+data = [
     { name = "cython" },
-    { name = "logging" },
     { name = "matplotlib" },
     { name = "memory-profiler" },
     { name = "numba" },
@@ -1239,15 +1239,21 @@ dependencies = [
     { name = "pingouin" },
     { name = "polars" },
     { name = "pyarrow" },
-    { name = "pydantic" },
+]
+dev = [
     { name = "pytest" },
-    { name = "typer" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "pydantic", specifier = ">=2.13.5" },
+    { name = "rich", specifier = ">=15.0.0" },
+    { name = "typer", specifier = ">=0.27.2" },
+]
+
+[package.metadata.requires-dev]
+data = [
     { name = "cython", specifier = ">=3.3.0" },
-    { name = "logging", specifier = ">=0.4.9.6" },
     { name = "matplotlib", specifier = ">=3.11.1" },
     { name = "memory-profiler", specifier = ">=0.61.0" },
     { name = "numba", specifier = ">=0.67.0" },
@@ -1256,10 +1262,8 @@ requires-dist = [
     { name = "pingouin", specifier = ">=0.6.1" },
     { name = "polars", specifier = ">=1.44.1" },
     { name = "pyarrow", specifier = ">=25.0.1" },
-    { name = "pydantic", specifier = ">=2.13.5" },
-    { name = "pytest", specifier = ">=9.1.1" },
-    { name = "typer", specifier = ">=0.27.2" },
 ]
+dev = [{ name = "pytest", specifier = ">=9.1.1" }]
 
 [[package]]
 name = "tabulate"

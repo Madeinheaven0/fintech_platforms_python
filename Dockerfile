@@ -2,19 +2,21 @@ FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
 WORKDIR /app
 
-# Forcer pip/uv à privilégier STRICTEMENT les paquets précompilés
+# Forcer les wheels précompilés
 ENV UV_ONLY_BINARY=":all:"
 
-# Copie des fichiers de configuration
+# Copie des fichiers de config
 COPY pyproject.toml uv.lock README.adoc ./
 
-# Synchronisation des dépendances (ultra-rapide)
-RUN uv sync --frozen --no-install-project
+# 1. Installation des dépendances de base uniquement (pydantic + typer)
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-install-project --no-dev --no-group data
 
 # Copie du code source
 COPY . .
 
-# Installation de votre projet
-RUN uv sync --frozen
+# 2. Installation du projet (toujours sans le groupe data)
+RUN --mount=type=cache,target=/root/.cache/uv \
+    uv sync --frozen --no-dev --no-group data
 
 ENTRYPOINT ["uv", "run", "cli-parser"]
