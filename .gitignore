@@ -33,3 +33,5 @@ htmlcov/
 # Fichiers système
 .DS_Store
 Thumbs.db
+
+datasets/
