@@ -1,9 +1,8 @@
-import os
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 import polars as pl
 
-from data.market_data import MarketDataParser
+from fintech_cli.data import MarketDataParser
 
 
 class AnalyticsData:

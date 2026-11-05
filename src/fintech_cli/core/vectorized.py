@@ -6,7 +6,16 @@ from numpy.random import default_rng as rng
 
 
 class MonteCarloBlackScholes:
-    def __init__(self, S0: float, r: float, vol: float, T: float, step: int, paths: int, seed: int = None):
+    def __init__(
+            self,
+            S0: float,
+            r: float,
+            vol: float,
+            T: float,
+            step: int,
+            paths: int,
+            seed: int = None
+    ):
         self.S0 = float(S0)
         self.mean_return = float(r)  # ou r
         self.vol = float(vol)
@@ -55,8 +64,19 @@ class CovarianceMatrix:
 
 
 class MonteCarloHeston:
-    def __init__(self, S0: float, r: float, v0: float, kappa: float, theta: float, xi: float, rho: float, T: float,
-                 step: int, paths: int, seed: int = None):
+    def __init__(self,
+                 S0: float,
+                 r: float,
+                 v0: float,
+                 kappa: float,
+                 theta: float,
+                 xi: float,
+                 rho: float,
+                 T: float,
+                 step: int,
+                 paths: int,
+                 seed: int = None
+                 ):
         self.S0 = S0
         self.r = r
         self.v0 = v0
@@ -123,4 +143,11 @@ class MonteCarloHeston:
 
         self.price_table = np.exp(log_paths)
         self._price = Decimal(str(self.price_table[-1].mean()))
+        return self._price
+
+    @property
+    def price(self) -> Decimal:
+        if self._price is None:
+            self.calculate_price()
+            return self._price
         return self._price

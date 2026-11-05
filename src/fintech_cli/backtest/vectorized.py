@@ -1,5 +1,3 @@
-import glob
-import os
 import pandas as pd
 from typing import List, Tuple
 from pandas.errors import EmptyDataError
@@ -10,36 +8,27 @@ import polars.selectors as cs
 class DataAnalytics:
     def __init__(
             self,
-            financial_data: pd.DataFrame,
+            financial_data: pd.DataFrame | pl.DataFrame,
             std_threshold: float,
             window: int = 20,
             std_period: int = 20,
             z_score: float = 2.5,
-            sma_long: int = 50,
-            sma_short: int = 20,
             low_alpha: float = 0.5,
             high_alpha: float = 0.8,
     ) -> None:
-        # Validation des paramètres
-        self._post_init(financial_data, std_threshold, window, std_period, z_score, sma_long, sma_short, low_alpha,
+        self._post_init(financial_data, std_threshold, window, std_period, z_score, low_alpha,
                         high_alpha)
 
-        # Conversion propre en Polars et initialisation directe des DataFrames de travail
         self.financial_data = self._convert_data(financial_data)
         self.assets_columns = [col for col in self.financial_data.columns if col != "Date"]
 
         self.std_threshold: float = std_threshold
         self.window: int = window
-        self.low_alpha: float = low_alpha
-        self.high_alpha: float = high_alpha
         self.std_period: int = std_period
         self.z_score_threshold: float = z_score
-        self.sma_long: int = sma_long
-        self.sma_short: int = sma_short
 
         self._pair_asset: List[Tuple[str, str]] = []
 
-        # IMPORTANT : On initialise avec la donnée de base pour garder la colonne "Date"
         self._analyzed_data: pl.DataFrame = self.financial_data.clone()
         self._analyzed_data_pair: pl.DataFrame = pl.select(
             pl.col("Date")) if "Date" in self.financial_data.columns else pl.DataFrame()
@@ -51,8 +40,6 @@ class DataAnalytics:
             window: int,
             std_period: int,
             z_score: float,
-            sma_long: int,
-            sma_short: int,
             low_alpha: float,
             high_alpha: float,
     ) -> None:
@@ -64,12 +51,8 @@ class DataAnalytics:
             raise ValueError('The volatility period  cannot be negative')
         if z_score <= 0:
             raise ValueError('The z-score cannot be negative')
-        if sma_long <= 0 or sma_short <= 0:
-            raise ValueError('The sma long and short cannot be negative')
         if window <= 0:
             raise ValueError('The window period cannot be negative')
-        if sma_long <= 0 and sma_short <= 0:
-            raise ValueError("The sma long and short cannot be negative")
         if low_alpha < 0 or high_alpha < 0:
             raise ValueError('The low and high alpha cannot be negative')
         if z_score <= 0:
@@ -84,10 +67,6 @@ class DataAnalytics:
             raise TypeError("The std_period is not a int")
         if not isinstance(z_score, float):
             raise TypeError("The z_score is not a float")
-        if not isinstance(sma_long, int):
-            raise TypeError("The sma_long is not a int")
-        if not isinstance(sma_short, int):
-            raise TypeError("The sma_short is not a int")
         if not isinstance(low_alpha, float):
             raise TypeError("The low_alpha is not a float")
         if not isinstance(high_alpha, float):

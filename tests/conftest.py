@@ -3,7 +3,7 @@ from datetime import datetime
 import pytest
 
 from pathlib import Path
-from data.market_data import MarketDataParser
+from fintech_cli.data import MarketDataParser
 from fintech_cli.models.arbitrage import ForwardContract
 
 
